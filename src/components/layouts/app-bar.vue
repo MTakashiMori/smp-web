@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-app-bar app absolute>
+        <v-app-bar app>
 
             <v-btn icon @click.stop="toggleMenu">
                 <v-icon>menu</v-icon>

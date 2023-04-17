@@ -1,4 +1,4 @@
-# vue2.6-vuetify3-boilerplate
+# SMP-WEB
 
 ## Project setup
 ```

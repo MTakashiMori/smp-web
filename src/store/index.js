@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isLoading: false,
-        drawer: false
+        drawer: true
     },
     mutations: {
         toggleSideMenu(state){

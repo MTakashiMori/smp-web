@@ -4,6 +4,7 @@ import ContentComponent from '@/components/layouts/content-component.vue';
 import Home from "@/views/Home.vue";
 import Login from "@/views/auth/login.vue";
 import Register from "@/views/auth/register.vue";
+import SampleSells from '@/views/SampleSells.vue';
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,16 @@ const routes = [
             {
                 path: 'register',
                 component: Register
+            },
+        ]
+    },
+    {
+        path: "/sales",
+        component: ContentComponent,
+        children: [
+            {
+                path: '',
+                component: SampleSells,
             },
         ]
     }

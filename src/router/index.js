@@ -5,6 +5,9 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/auth/login.vue";
 import Register from "@/views/auth/register.vue";
 import SampleSells from '@/views/SampleSells.vue';
+import Sponsors from '@/views/financial/sponsors.vue';
+import Budgets from '@/views/financial/budgets.vue';
+import BankingMovement from '@/views/financial/banking-movement.vue';
 
 Vue.use(VueRouter);
 
@@ -35,6 +38,24 @@ const routes = [
                 path: '',
                 component: SampleSells,
             },
+        ]
+    },
+    {
+        path: "/financial",
+        component: ContentComponent,
+        children: [
+            {
+                path: 'sponsors',
+                component: Sponsors,
+            },
+            {
+                path: 'budgets',
+                component: Budgets,
+            },
+            {
+                path: 'banking-movement',
+                component: BankingMovement
+            }
         ]
     }
 ];

@@ -97,7 +97,7 @@
         },
         methods: {
             addProduct(item) {
-                let index = this.selected.findIndex((i) => i.id == item.name);
+                let index = this.findIndexByName(item.name);
                 if(index != -1) {
                     this.selected[index].quantity++;
                     this.selected[index].price += item.price;
@@ -110,15 +110,22 @@
                 });
             },
             removeProduct(item) {
-                let index = this.selected.findIndex((i) => i.id == item.name);
+                let index = this.findIndexByName(item.name);
                 if(index != -1) {
-                    this.selected[index].quantity--
+                    this.selected[index].quantity--;
+                    if(this.selected[index].quantity <= 0) {
+                        this.selected.splice(index, 1);
+                        return;
+                    }
                     this.selected[index].price -= item.price;
                 }
             },
             selectedProductQty(id) {
                 const i = this.selected.find((item) => item.id == id);
                 return i ? i.quantity : 0
+            },
+            findIndexByName(name) {
+                return this.selected.findIndex((i) => i.id == name);
             }
         }
     }

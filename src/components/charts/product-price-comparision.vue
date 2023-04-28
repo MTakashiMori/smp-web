@@ -50,7 +50,6 @@
                 for(let i = 0; i <= 6; i++) {
                     // colors.items.push({color: this.generatePastelColor()});
                 }
-                console.log(colors);
                 colors.items([{ color: '#009253' }, { color: '#07311F' }]);
 
                 // create a chart and set the data

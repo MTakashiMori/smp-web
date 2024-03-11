@@ -7,7 +7,7 @@ import Register from "@/views/auth/register.vue";
 import SampleSells from '@/views/SampleSells.vue';
 import Sponsors from '@/views/financial/sponsors.vue';
 import Budgets from '@/views/financial/budgets.vue';
-import BankingMovement from '@/views/financial/banking-movement.vue';
+import Transactions from '@/views/financial/transactions.vue';
 
 Vue.use(VueRouter);
 
@@ -53,8 +53,8 @@ const routes = [
                 component: Budgets,
             },
             {
-                path: 'banking-movement',
-                component: BankingMovement
+                path: 'transactions',
+                component: Transactions
             }
         ]
     }

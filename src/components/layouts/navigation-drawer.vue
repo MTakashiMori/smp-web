@@ -51,18 +51,14 @@
                 logo: logo,
                 items: [
                     {title: 'Inicio', icon: 'house', route: '/'},
-                    {title: 'Festas', icon: 'celebration', route: '/'},
-                    {title: 'Vendas', icon: 'shopping_cart', route: '/'},
-                    {title: 'Visão vendas - Cachorro-quente', icon: 'visibility', route: '/sales', name: 'Cachorro-quente'},
-                    {title: 'Visão vendas - Bebidas', icon: 'visibility', route: '/sales', name: 'Bebidas'},
-                    {title: 'Visão vendas - Pastel', icon: 'visibility', route: '/sales', name: 'Pastel'},
-                    // {title: 'Visão Barraca', icon: 'visibility', route: '/sells', name: ''},
+                    {title: 'Festas', icon: 'celebration', route: '/party'},
+                    {title: 'Produtos', icon: 'inventory', route: '/products'},
                 ],
                 financialItems: [
                     {title: 'Patrocinadores', icon: 'add_business', route: '/financial/sponsors'},
                     {title: 'Orçamentos', icon: 'shopping_bag', route: '/financial/budgets'},
-                    {title: 'Movimentações', icon: 'payments', route: '/financial/banking-movement'},
-                ]
+                    {title: 'Transações', icon: 'payments', route: '/financial/transactions'},
+                ],
             };
         },
         methods: {

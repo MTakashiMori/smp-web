@@ -86,7 +86,7 @@
     import * as bankingMovement from '@/constants/banking-movement-type.js';
 
     export default {
-        name: 'BankingMovement',
+        name: 'Transactions',
         data() {
             return {
                 datatable: {

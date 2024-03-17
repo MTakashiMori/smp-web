@@ -8,6 +8,7 @@ import SampleSells from '@/views/SampleSells.vue';
 import Sponsors from '@/views/financial/sponsors.vue';
 import Budgets from '@/views/financial/budgets.vue';
 import Transactions from '@/views/financial/transactions.vue';
+import Party from "@/views/party/party.vue";
 
 Vue.use(VueRouter);
 
@@ -37,6 +38,16 @@ const routes = [
             {
                 path: '',
                 component: SampleSells,
+            },
+        ]
+    },
+    {
+        path: "/party",
+        component: ContentComponent,
+        children: [
+            {
+                path: '',
+                component: Party,
             },
         ]
     },

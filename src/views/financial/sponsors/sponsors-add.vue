@@ -25,7 +25,7 @@
 
                         <v-row>
                             <v-col>
-                                <v-text-field label="Telefone" v-model="model.telephone" required :rules=rules.required></v-text-field>
+                                <v-text-field label="Telefone" v-model="model.telephone" required :rules=rules.required v-mask="'(##) # ####-####'"></v-text-field>
                             </v-col>
                             <v-col>
                                 <v-text-field label="Pessoa de referência" v-model="model.reference"></v-text-field>

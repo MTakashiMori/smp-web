@@ -9,6 +9,9 @@ import Sponsors from '@/views/financial/sponsors.vue';
 import Budgets from '@/views/financial/budgets.vue';
 import Transactions from '@/views/financial/transactions.vue';
 import Party from "@/views/party/party.vue";
+import Products from "@/views/products/products.vue";
+import PartyMenu from "@/views/party-menu/party-menu.vue";
+import PartyMenuItem from "@/views/party-menu/party-menu-item.vue";
 
 Vue.use(VueRouter);
 
@@ -49,6 +52,33 @@ const routes = [
                 path: '',
                 component: Party,
             },
+        ]
+    },
+    {
+        path: "/products",
+        component: ContentComponent,
+        children: [
+            {
+                path: '',
+                component: Products,
+            },
+        ]
+    },
+    {
+        path: "/party-menu",
+        component: ContentComponent,
+        children: [
+            {
+                path: ':id',
+                component: PartyMenuItem,
+                name: 'partyMenuItemShow'
+            },
+            {
+                path: '',
+                component: PartyMenu,
+                name: 'partyMenuItem'
+            },
+
         ]
     },
     {

@@ -4,7 +4,7 @@
         <v-card>
 
             <v-card-title>
-                Festas
+                Produtos
 
                 <v-spacer></v-spacer>
 
@@ -16,12 +16,6 @@
                 <v-data-table
                     :headers="datatable.headers"
                     :items="datatable.items">
-
-                    <template v-slot:item.date="{ item }">
-                        {{ item.date.join(' ~ ') }}
-                    </template>
-
-
                     <template v-slot:item.actions="{ item }">
 
                         <v-tooltip bottom>
@@ -42,24 +36,6 @@
                             <span>Editar</span>
                         </v-tooltip><!-- rate by business -->
 
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
-                                <v-btn icon v-on="on" @click="">
-                                    <v-icon>contact_phone</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Contato</span>
-                        </v-tooltip><!-- rate by business -->
-
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
-                                <v-btn icon v-on="on" @click="goToMenu(item)">
-                                    <v-icon>tapas</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Visualizar cardápio</span>
-                        </v-tooltip><!-- rate by business -->
-
                     </template>
 
                 </v-data-table>
@@ -69,7 +45,7 @@
         </v-card>
 
         <v-dialog v-model="modal.status" persistent width="60%">
-            <party-add @close="closeModal"/>
+            <products-add @close="closeModal"/>
         </v-dialog>
 
     </div>
@@ -78,21 +54,18 @@
 
 <script>
 
-import PartyAdd from "@/views/party/party-add.vue";
 import Service from "@/service";
+import ProductsAdd from "@/views/products/products-add.vue";
 
 export default {
-    name: 'Party',
-    components: {PartyAdd},
+    name: 'Products',
+    components: {ProductsAdd},
     data() {
         return {
-            path: 'party',
+            path: 'product',
             datatable: {
                 headers: [
                     {text: 'Nome', value: 'name'},
-                    {text: 'Data', value: 'date'},
-                    {text: 'Referencia', value: 'reference'},
-                    {text: 'Endereço', value: 'address'},
                     {text: '', value: 'actions', align: 'end'},
                 ],
                 items: []
@@ -116,13 +89,6 @@ export default {
                 this.get();
             }
             this.modal.status = false;
-        },
-        goToMenu(item) {
-            //TODO check here
-            if(item.party_menu.length === 1) {
-                this.$router.push({name: 'partyMenuItemShow', params: {id: item.party_menu[0].id}});
-            }
-            this.$router.push({name: 'partyMenuItem'});
         }
     },
     mounted() {

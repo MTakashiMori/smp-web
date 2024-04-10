@@ -25,16 +25,16 @@
 
                         <v-row>
                             <v-col>
-                                <v-dialog ref="dialog" v-model="modal" :return-value.sync="model.date" persistent width="290px">
+                                <v-dialog ref="dialog" v-model="modal" :return-value.sync="date" persistent width="290px">
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
-                                            v-model="dateRangeText" label="Data"
+                                            v-model="model.date" label="Data"
                                             readonly
                                             v-bind="attrs"
                                             v-on="on"
                                         ></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="model.date" scrollable range >
+                                    <v-date-picker v-model="model.date" scrollable >
                                         <v-spacer></v-spacer>
                                         <v-btn text color="primary" @click="modal = false"> Cancelar </v-btn>
                                         <v-btn text color="primary" @click="$refs.dialog.save(model.date)"> OK </v-btn>
@@ -74,14 +74,14 @@
 import Service from "@/service";
 
 export default {
-    name: 'party-add',
+    name: 'Products-add',
     data() {
         return {
-            path: 'party',
+            path: 'sponsor',
             modal: false,
             model: {
                 name: null,
-                date: [],
+                date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
                 reference: null,
                 address: null
             },
@@ -98,10 +98,6 @@ export default {
                 //ADD NOTIFY
                 return;
             }
-            this.model.start_date = this.model.date[0];
-            this.model.end_date = this.model.date[1];
-            delete(this.model.date);
-
             Service.save(this.path, this.model).then((res) => {
                 console.log('created', res);
                 this.$refs.sponsorAdd.reset();
@@ -115,12 +111,7 @@ export default {
 
             this.$emit('close', false);
         },
-    },
-    computed: {
-        dateRangeText () {
-            return this.model.date.join(' ~ ');
-        },
-    },
+    }
 }
 
 </script>

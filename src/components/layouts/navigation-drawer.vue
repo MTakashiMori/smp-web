@@ -52,6 +52,7 @@
                 items: [
                     {title: 'Inicio', icon: 'house', route: '/'},
                     {title: 'Festas', icon: 'celebration', route: '/party'},
+                    {title: 'Cardápios', icon: 'menu_book', route: '/party-menu'},
                     {title: 'Produtos', icon: 'inventory', route: '/products'},
                 ],
                 financialItems: [

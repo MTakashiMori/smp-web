@@ -3,8 +3,10 @@ import messages from "@/constants/messages";
 
 export default {
 
-    get(path) {
-        let config = null;
+    get(path, data) {
+
+        let config = {};
+        config.params = data;
 
         return axios.get((process.env.VUE_APP_API_URL + path), config)
             .then((response) => {

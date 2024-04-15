@@ -6,7 +6,7 @@
                 <v-icon>menu</v-icon>
             </v-btn>
 
-            <v-toolbar-title>SMP - WEB</v-toolbar-title>
+            <v-toolbar-title @click="notify">SMP - WEB</v-toolbar-title>
 
             <v-spacer></v-spacer>
 
@@ -90,6 +90,12 @@
             },
             help() {
 
+            },
+            notify() {
+                this.$store.dispatch('notify', {
+                    'message': 'Que deus te elimine',
+                    'type': 'warning'
+                })
             }
         },
         computed: {

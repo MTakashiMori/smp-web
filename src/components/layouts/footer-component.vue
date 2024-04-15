@@ -1,12 +1,12 @@
 <template>
-  <v-footer app>
+    <v-footer app>
 
-    <v-divider></v-divider>
+        <v-divider></v-divider>
 
-    <div>
-      {{ new Date().getFullYear() }} — <strong>        Pároquia Santa Maria dos Pobres - Paranoá</strong>
-    </div>
-  </v-footer>
+        <div>
+          {{ new Date().getFullYear() }} — <strong>        Pároquia Santa Maria dos Pobres - Paranoá</strong>
+        </div>
+    </v-footer>
 </template>
 
 <script>

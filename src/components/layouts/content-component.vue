@@ -6,14 +6,20 @@
                 <router-view :key="this.$route.fullPath"></router-view>
             <!-- </keep-alive> -->
         <!-- </transition> -->
+
+        <notify-component></notify-component>
+
     </v-container>
 
 </template>
 
 <script>
 
+    import NotifyComponent from "@/components/layouts/notify-component.vue";
+
     export default {
-        name: 'content-component'
+        name: 'content-component',
+        components: {NotifyComponent}
     }
 </script>
 

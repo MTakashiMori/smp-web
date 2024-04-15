@@ -28,7 +28,7 @@
                         ></v-text-field>
 
                         <div style="text-align: end">
-                            <v-btn class="warning btn-margin">Ajuda</v-btn>
+                            <v-btn class="warning btn-margin" @click="help">Ajuda</v-btn>
                             <v-btn class="secondary btn-margin" @click="$router.push('/auth/register')">Registrar</v-btn>
                             <v-btn class="primary" color="green" @click="login">Login</v-btn>
                         </div>
@@ -65,7 +65,8 @@
                     this.$store.dispatch('setUser', {user: res.data.data});
                     this.$router.push({name: 'home'});
                 });
-            }
+            },
+            help() {}
         },
         mounted() {
             Cookies.remove('smp_token');

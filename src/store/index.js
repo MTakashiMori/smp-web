@@ -8,7 +8,12 @@ export default new Vuex.Store({
     state: {
         isLoading: false,
         drawer: true,
-        user: null
+        user: null,
+        notify: {
+            status: false,
+            message: null,
+            type: null
+        }
     },
     mutations: {
         toggleSideMenu(state){
@@ -20,6 +25,24 @@ export default new Vuex.Store({
         logout(state) {
             Cookies.remove('smp_token');
             state.user = null;
+        },
+        setNotify(state, data) {
+            if(state.notify.status) {
+                state.notify.status = false;
+
+                //TODO think a way to optimize this
+                setTimeout(() => {
+                    state.notify.message = data.message;
+                    state.notify.type = data.type;
+
+                    state.notify.status = true;
+                }, 50);
+                return;
+            }
+            state.notify.message = data.message;
+            state.notify.type = data.type;
+
+            state.notify.status = true;
         }
     },
     actions: {
@@ -31,6 +54,9 @@ export default new Vuex.Store({
         },
         logout({commit}) {
             commit('logout');
+        },
+        notify({commit}, message, type= null) {
+            commit('setNotify', message, type);
         }
     },
     getters: {
@@ -42,6 +68,9 @@ export default new Vuex.Store({
         },
         isLogged: state => {
             return state.user !== null;
+        },
+        getNotify: state => {
+            return state.notify;
         }
     },
     modules: {}

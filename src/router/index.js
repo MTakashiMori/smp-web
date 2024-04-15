@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Cookies from "js-cookie";
 import ContentComponent from '@/components/layouts/content-component.vue';
 import Home from "@/views/Home.vue";
 import Login from "@/views/auth/login.vue";
@@ -12,13 +13,15 @@ import Party from "@/views/party/party.vue";
 import Products from "@/views/products/products.vue";
 import PartyMenu from "@/views/party-menu/party-menu.vue";
 import PartyMenuItem from "@/views/party-menu/party-menu-item.vue";
+import Financials from "@/views/financial/financials.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
     {
         path: "/",
-        component: Home
+        component: Home,
+        name: 'home',
     },
     {
         path: "/auth",
@@ -26,11 +29,13 @@ const routes = [
         children: [
             {
                 path: 'login',
-                component: Login
+                component: Login,
+                name: 'login'
             },
             {
                 path: 'register',
-                component: Register
+                component: Register,
+                name: 'register'
             },
         ]
     },
@@ -94,8 +99,20 @@ const routes = [
                 component: Budgets,
             },
             {
-                path: 'transactions',
-                component: Transactions
+                path: 'financials',
+                component: ContentComponent,
+                children: [
+                    {
+                        path: '',
+                        component: Financials,
+                        name: 'Financials'
+                    },
+                    {
+                        path: ':id/transactions',
+                        component: Transactions,
+                        name: 'Transactions'
+                    },
+                ]
             }
         ]
     }
@@ -105,6 +122,18 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach(async (to, from, next) => {
+    const token = Cookies.get('smp_token');
+    if(
+        !token &&
+        (!['login', 'register'].includes(to.name))
+    ) {
+        return '/auth/login';
+    }
+
+    next();
 });
 
 export default router;

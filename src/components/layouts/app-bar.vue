@@ -2,7 +2,7 @@
     <div>
         <v-app-bar app>
 
-            <v-btn icon @click.stop="toggleMenu">
+            <v-btn icon @click.stop="toggleMenu" v-if="user">
                 <v-icon>menu</v-icon>
             </v-btn>
 
@@ -23,16 +23,28 @@
                     <span>Inverter cores</span>
                 </v-tooltip>
 
-                 <v-tooltip bottom>
+                <span>{{ user ? user.name : '' }}</span>
+
+                <v-menu bottom origin="center center" transition="scale-transition" min-width="10%" v-if="user">
+
                     <template v-slot:activator="{ on }">
                         <v-btn text center v-on="on">
+                            <span style="margin-left: 3%">{{ user ? user.user.name : '' }}</span>
                             <v-icon>
                                 account_circle
                             </v-icon>
                         </v-btn>
                     </template>
-                    <span>Login / Logout</span>
-                </v-tooltip>
+
+                    <v-list>
+                        <v-list-item v-if="!$store.getters.isLogged" @click="loginOrLogout"> Login </v-list-item>
+                        <v-list-item v-if="$store.getters.isLogged" @click="profile"> Perfil </v-list-item>
+                        <v-list-item v-if="$store.getters.isLogged" @click="help"> Ajuda </v-list-item>
+                        <v-list-item v-if="$store.getters.isLogged" @click="loginOrLogout"> Sair </v-list-item>
+                    </v-list>
+
+                </v-menu>
+
 
             </v-toolbar-items>
 <!--
@@ -60,13 +72,30 @@
             }
         },
         methods: {
+            loginOrLogout() {
+                if(this.$store.getters.getUser) {
+                    this.$store.dispatch('logout');
+                }
+                this.$router.push({name: 'login'});
+            },
             toggleMenu() {
                 this.$store.dispatch('toggleMenu');
             },
             toggleDark() {
                 this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
                 localStorage.setItem('dark_theme', this.$vuetify.theme.dark);
+            },
+            profile() {
+
+            },
+            help() {
+
             }
+        },
+        computed: {
+            user() {
+                return this.$store.getters.getUser;
+            },
         }
     }
 

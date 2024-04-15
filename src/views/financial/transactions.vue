@@ -8,8 +8,49 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn class="primary">Adicionar</v-btn>
+            <v-btn class="primary" @click="goBack">Voltar</v-btn>
         </v-card-title>
+
+        <v-container>
+            <v-row>
+                <v-col>
+                    <v-card shaped>
+                        <v-card-title>Lucro</v-card-title>
+                        <v-card-text style="text-align: end; font-size: large">
+                            <p v-for="item in reportItems['profit']">
+                                <span >
+                                    {{item.name}} ... R$ {{item.positive}}
+                                </span>
+                            </p>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+                <v-col>
+                    <v-card shaped>
+                        <v-card-title>Despesas</v-card-title>
+                        <v-card-text style="text-align: end; font-size: large">
+                            <p v-for="item in reportItems['loss']">
+                                <span >
+                                    {{item.name}} ... R$ {{item.positive}}
+                                </span>
+                            </p>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+                <v-col>
+                    <v-card shaped>
+                        <v-card-title>Em análise</v-card-title>
+                        <v-card-text style="text-align: end; font-size: large">
+                            <p v-for="item in reportItems['on_review']">
+                                <span >
+                                    {{item.name}} ... R$ {{item.positive}}
+                                </span>
+                            </p>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-container>
 
         <v-card-text>
 
@@ -18,57 +59,57 @@
                 :items="datatable.items"
             >
 
-                <template v-slot:item.price="{ item }">
-                    R$ {{ item.price }}
+                <template v-slot:item.value="{item}">
+                    <span :style="{ color: item.value > 0 ? 'green' : 'red' }">
+                        R$ {{ item.value.toLocaleString("en",{useGrouping: false,minimumFractionDigits: 2}) }}
+                    </span>
                 </template>
 
-                <template v-slot:item.type="{ item }">
-                    <v-chip :color="getType(item.type).color">
-                        {{ getType(item.type).name  }}
+                <template v-slot:item.status="{ item }">
+                    <v-chip :color="getStatus(item.status).color" style="color:#000;">
+                        {{ getStatus(item.status).name  }}
                     </v-chip>
                 </template>
 
-                <!-- <template v-slot:item.actions="{ item }"> -->
+                <template v-slot:item.actions="{ item }">
 
-
-<!--
                     <v-tooltip bottom>
-                        <template v-slot:activator="{ on }" v-if="item.status == 'pending'">
+                        <template v-slot:activator="{ on }" v-if="item.status === 'Open'">
                             <v-btn icon v-on="on" @click="">
                                 <v-icon>edit</v-icon>
                             </v-btn>
                         </template>
                         <span>Editar</span>
-                    </v-tooltip> -->
+                    </v-tooltip>
 
-                     <!-- <v-tooltip bottom>
-                        <template v-slot:activator="{ on }" v-if="item.status == 'pending'">
-                            <v-btn icon v-on="on" @click="">
-                                <v-icon>highlight_off</v-icon>
-                            </v-btn>
-                        </template>
-                        <span>Rejeitar</span>
-                    </v-tooltip> -->
-
-                     <!-- <v-tooltip bottom>
-                        <template v-slot:activator="{ on }" v-if="item.status == 'pending'">
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
                             <v-btn icon v-on="on" @click="">
                                 <v-icon>check_circle</v-icon>
                             </v-btn>
                         </template>
                         <span>Aprovar</span>
-                    </v-tooltip> -->
+                    </v-tooltip>
 
-                    <!-- <v-tooltip bottom>
+                    <v-tooltip bottom>
                         <template v-slot:activator="{ on }">
                             <v-btn icon v-on="on" @click="">
-                                <v-icon>contact_phone</v-icon>
+                                <v-icon>cancel</v-icon>
                             </v-btn>
                         </template>
-                        <span>Contato</span>
-                    </v-tooltip> -->
+                        <span>Rejeitar</span>
+                    </v-tooltip>
 
-                <!-- </template> -->
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }" v-if="(item.status !== 'On review')">
+                            <v-btn icon v-on="on" @click="">
+                                <v-icon>lock</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Revisar</span>
+                    </v-tooltip>
+
+                </template>
 
             </v-data-table>
 
@@ -83,35 +124,53 @@
 
 <script>
 
-    import * as bankingMovement from '@/constants/banking-movement-type.js';
+    import Service from "@/service";
+    import FinancialStatus from "@/constants/financial-status";
+    import TransactionStatus from "@/constants/transaction-status";
 
     export default {
         name: 'Transactions',
         data() {
             return {
+                path: 'transactions',
                 datatable: {
                     headers: [
                         {text: 'Nome', value: 'name'},
-                        {text: 'Tipo', value: 'type'},
-                        {text: 'Valor', value: 'price'},
-                        {text: 'Data/Hora', value: 'created_at'},
-                        // {text: '', value: 'actions', align: 'end'},
+                        {text: 'Descrição', value: 'description'},
+                        {text: 'Categoria', value: 'categories.name'},
+                        {text: 'Valor', value: 'value'},
+                        {text: 'Status', value: 'status'},
+                        {text: '', value: 'actions', align: 'end'},
                     ],
-                    items: [
-                        {name: 'Patrocinio - Dispar', type: 'add', price: '5.000', created_at: '2023-04-01' },
-                        {name: 'Patrocinio - Farmanossa', type: 'add', price: '2.000', created_at: '2023-04-01' },
-                        {name: 'Patrocinio - Boka Loka', type: 'add', price: '5.000', created_at: '2023-04-01' },
-                        {name: 'Patrocinio - Requint', type: 'add', price: '10.000', created_at: '2023-04-01' },
-                        {name: 'Pagamento Palco', type: 'remove', price: '10.000', created_at: '2023-04-02' },
-                    ]
+                    items: []
                 },
-                bankingMovement: bankingMovement
+                transactionStatus: TransactionStatus,
+                reportItems: []
             }
         },
         methods: {
-            getType (status) {
-                return this.bankingMovement.default.find((item) => item.value == status);
+            getData() {
+                Service.get(this.path, {financial_id: this.$route.params.id}).then((res) => {
+                   this.datatable.items = res.data.data;
+                });
             },
+            getTransactionReport()
+            {
+                Service.get('transactions/report', {financial_id: this.$route.params.id}).then((res) => {
+                    this.reportItems = res.data.data;
+                    // this.datatable.items = res.data.data;
+                });
+            },
+            getStatus (status) {
+                return this.transactionStatus.find((item) => item.value === status);
+            },
+            goBack() {
+                this.$router.push({name: 'Financials'});
+            }
+        },
+        mounted() {
+            this.getData();
+            this.getTransactionReport();
         }
     }
 

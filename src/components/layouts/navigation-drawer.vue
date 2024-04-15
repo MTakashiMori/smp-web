@@ -1,8 +1,8 @@
 <template>
 
-    <v-navigation-drawer app v-model="drawerModel">
+    <v-navigation-drawer app :mini-variant.sync="drawerModel" v-if="user">
 
-        <v-img :src="logo" alt="logo canie" :eager="true"></v-img>
+        <v-img :src="logo" :eager="true"></v-img>
 
         <v-list>
             <v-list-item v-for="item in items" :key="item.title" link @click="routeGo(item)">
@@ -58,7 +58,7 @@
                 financialItems: [
                     {title: 'Patrocinadores', icon: 'add_business', route: '/financial/sponsors'},
                     {title: 'Orçamentos', icon: 'shopping_bag', route: '/financial/budgets'},
-                    {title: 'Transações', icon: 'payments', route: '/financial/transactions'},
+                    {title: 'Livro contábil', icon: 'payments', route: '/financial/financials'},
                 ],
             };
         },
@@ -73,7 +73,10 @@
                     return this.$store.getters.getDrawer;
                 },
                 set(){}
-            }
+            },
+            user() {
+                return this.$store.getters.getUser;
+            },
         }
     }
 </script>

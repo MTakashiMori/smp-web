@@ -48,6 +48,19 @@ export default {
 
     remove() {
 
+    },
+
+    login(data, path = 'auth/login') {
+        let config = null;
+
+        return axios.post((process.env.VUE_APP_API_URL + path), data, config)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                // this.notify(messages.messages.MSG002);
+                console.log(error);
+            });
     }
 
 }

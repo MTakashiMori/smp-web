@@ -16,10 +16,12 @@
 
 <script>
 
+    import Cookies from "js-cookie";
     import AppBar from "@/components/layouts/app-bar.vue";
     import NavigationDrawer from "@/components/layouts/navigation-drawer.vue";
     import ContentComponent from "@/components/layouts/content-component.vue";
     import FooterComponent from "@/components/layouts/footer-component.vue";
+    import Service from "@/service";
 
     export default {
         name: "App",
@@ -28,6 +30,15 @@
             NavigationDrawer,
             ContentComponent,
             FooterComponent
+        },
+        mounted() {
+            const token = Cookies.get('smp_token');
+            if(token) {
+                Service.getUser().then((res) => {
+                    this.$store.dispatch('setUser', {user: res.data.data});
+                });
+            }
+
         }
     };
 

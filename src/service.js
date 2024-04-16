@@ -1,11 +1,15 @@
 import axios, {AxiosError} from "axios";
 import messages from "@/constants/messages";
+import Cookies from "js-cookie";
+import store from "@/store";
 
 export default {
 
     get(path, data) {
 
-        let config = {};
+        let config = {
+            headers: { Authorization: `Bearer ${Cookies.get('smp_token')}` }
+        };
         config.params = data;
 
         return axios.get((process.env.VUE_APP_API_URL + path), config)
@@ -61,6 +65,23 @@ export default {
                 // this.notify(messages.messages.MSG002);
                 console.log(error);
             });
+    },
+
+    getUser(path = 'auth/getUser') {
+        let config = {
+            headers: { Authorization: `Bearer ${Cookies.get('smp_token')}` }
+        };
+        config.params = {};
+
+        return axios.post((process.env.VUE_APP_API_URL + path),null, config)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                // this.notify(messages.messages.MSG002);
+                console.log(error);
+            });
+
     }
 
 }

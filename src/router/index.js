@@ -14,6 +14,7 @@ import Products from "@/views/products/products.vue";
 import PartyMenu from "@/views/party-menu/party-menu.vue";
 import PartyMenuItem from "@/views/party-menu/party-menu-item.vue";
 import Financials from "@/views/financial/financials.vue";
+import Profile from "@/views/user/profile.vue";
 
 Vue.use(VueRouter);
 
@@ -36,6 +37,11 @@ const routes = [
                 path: 'register',
                 component: Register,
                 name: 'register'
+            },
+            {
+                path: ':id',
+                component: Profile,
+                name: 'profile'
             },
         ]
     },
@@ -130,7 +136,7 @@ router.beforeEach(async (to, from, next) => {
         !token &&
         (!['login', 'register'].includes(to.name))
     ) {
-        return '/auth/login';
+        next({name: 'login'});
     }
 
     next();

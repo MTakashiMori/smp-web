@@ -86,7 +86,7 @@
                 localStorage.setItem('dark_theme', this.$vuetify.theme.dark);
             },
             profile() {
-
+                this.$router.push({name: 'profile', params: {id: this.$store.getters.getUser.id}});
             },
             help() {
 

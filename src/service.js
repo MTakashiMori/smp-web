@@ -14,10 +14,11 @@ export default {
 
         return axios.get((process.env.VUE_APP_API_URL + path), config)
             .then((response) => {
+                this.notify(messages.messages.MSG001);
                 return response;
             })
             .catch((error) => {
-                // this.notify(messages.messages.MSG002);
+                this.notify(messages.messages.MSG002);
                 console.log(error);
             });
 
@@ -25,7 +26,7 @@ export default {
 
     save(path, data, id) {
         if(id) {
-            return this.update(path, data);
+            return this.update(path, data, id);
         }
         return this.create(path, data);
     },
@@ -36,6 +37,7 @@ export default {
 
         return axios.post((process.env.VUE_APP_API_URL + path), data, config)
             .then((response) => {
+                this.notify(messages.messages.MSG003);
                 return response;
             })
             .catch((error) => {
@@ -44,9 +46,19 @@ export default {
             });
     },
 
-    update(path, data) {
+    update(path, data, id) {
 
         let config = null;
+
+        return axios.put((process.env.VUE_APP_API_URL + path + '/' + id), data, config)
+            .then((response) => {
+                this.notify(messages.messages.MSG004);
+                return response;
+            })
+            .catch((error) => {
+                // this.notify(messages.messages.MSG002);
+                console.log(error);
+            });
 
     },
 
@@ -82,6 +94,13 @@ export default {
                 console.log(error);
             });
 
+    },
+
+    notify( message, type= null) {
+        store.dispatch('notify', {
+            'message': message,
+            'type': type
+        })
     }
 
 }

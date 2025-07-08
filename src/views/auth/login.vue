@@ -22,11 +22,17 @@
                                 label="Email"
                             ></v-text-field>
 
+
                             <v-text-field
-                                v-model="model.password"
+                                :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                                 :rules="rules.password"
+                                :type="showPassword ? 'text' : 'password'"
+                                v-model="model.password"
                                 label="Senha"
+                                hint="Digite a sua senha"
+                                @click:append="showPassword = !showPassword"
                             ></v-text-field>
+
 
                             <div style="text-align: end">
                                 <v-btn class="warning btn-margin" @click="help">Ajuda</v-btn>
@@ -67,7 +73,8 @@
                     password: [
                         v => !!v || 'A senha é obrigatória',
                     ]
-                }
+                },
+                showPassword: false,
             }
         },
         methods: {

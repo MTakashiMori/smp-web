@@ -10,6 +10,16 @@
 
             <v-spacer></v-spacer>
 
+	    <v-tooltip bottom>
+		<template v-slot:activator="{ on }">
+		    <v-btn text v-on="on" @click.stop="selectParty" >
+			<v-icon>celebration</v-icon>
+			{{currentParty ? currentParty.party.party_name : ''}}
+		    </v-btn>
+		</template>
+		<span>Selecionar festa</span>
+	    </v-tooltip><!-- rate by business -->
+
             <v-toolbar-items class="hidden-sm-and-down">
 
                 <v-tooltip bottom>
@@ -58,17 +68,30 @@
 
         </v-app-bar>
 
+	<select-party-modal
+	    v-if="selectPartyModal.status"
+	    :status="selectPartyModal.status"
+	    @close="closeSelectPartyModal"
+	/>
+
     </div>
 </template>
 
 <script>
 
+    import SelectPartyModal from "@/views/party/select-party-modal.vue";
+
     export default {
         name: 'app-bar',
+	components: {SelectPartyModal},
         data() {
             return {
                 drawer: false,
                 group: null,
+		selectPartyModal: {
+		    modalKey: 1,
+		    status: false
+		}
             }
         },
         methods: {
@@ -85,6 +108,10 @@
                 this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
                 localStorage.setItem('dark_theme', this.$vuetify.theme.dark);
             },
+	    selectParty() {
+		this.selectPartyModal.modalKey++;
+		this.selectPartyModal.status = true;
+	    },
             profile() {
                 this.$router.push({name: 'profile', params: {id: this.$store.getters.getUser.id}});
             },
@@ -96,12 +123,18 @@
                     'message': 'Que deus te elimine',
                     'type': 'warning'
                 })
-            }
+            },
+	    closeSelectPartyModal() {
+		this.selectPartyModal.status = false;
+	    }
         },
         computed: {
             user() {
                 return this.$store.getters.getUser;
             },
+	    currentParty() {
+		return this.$store.getters.getCurrentParty;
+	    }
         }
     }
 

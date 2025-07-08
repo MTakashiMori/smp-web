@@ -54,6 +54,7 @@
                     {title: 'Festas', icon: 'celebration', route: '/party'},
                     {title: 'Cardápios', icon: 'menu_book', route: '/party-menu'},
                     {title: 'Produtos', icon: 'inventory', route: '/products'},
+                    {title: 'Caixa / Vendas', icon: 'shopping_cart', route: '/sales'},
                 ],
                 financialItems: [
                     {title: 'Patrocinadores', icon: 'add_business', route: '/financial/sponsors'},

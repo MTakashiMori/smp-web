@@ -1,79 +1,21 @@
 <template>
-    <div>
+    <div class="card-container">
 
-        <v-card>
-            <v-card-title>Festa da Padroeira Santa Maria dos Pobres - 2023 &#127881;</v-card-title>
+	<v-card>
+	    <v-card-title>
+		{{
+		    currentParty ?
+		    currentParty.party.party_name + '&#127881;' :
+		    username
+		}}
+	    </v-card-title>
+	</v-card>
 
-            <!-- <v-container> -->
+	<super-admin-card/>
 
+	<admin-card/>
 
-
-            <!-- </v-container> -->
-
-
-
-        </v-card>
-
-        <v-row>
-            <v-col>
-                <v-card style="background-color: green;">
-                    <v-card-title>
-                        Total vendido:
-                        <v-spacer></v-spacer>
-                        <v-icon small>autorenew</v-icon>
-                    </v-card-title>
-                    <v-card-text style="text-align: end;">
-                        <h2>
-                            R$ 14.456,50
-                        </h2>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-
-            <v-col>
-                <v-card style="background-color: blueviolet;">
-                    <v-card-title>
-                        Vendas realizadas:
-                        <v-spacer></v-spacer>
-                        <v-icon small>autorenew</v-icon>
-                    </v-card-title>
-                    <v-card-text style="text-align: end;">
-                        <h2>
-                            5.150 vendas
-                        </h2>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-            <v-col>
-                <v-card style="background-color:indianred;">
-                    <v-card-title>
-                        Ranking produtos mais vendidos:
-                        <v-spacer></v-spacer>
-                        <v-icon small>autorenew</v-icon>
-                    </v-card-title>
-                    <v-card-text style="text-align: end;">
-                        <h2>
-                           Bebidas - Cachorro quente - Pastel
-                        </h2>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
-
-        <v-row>
-            <v-col>
-                <SellsByCategory/>
-            </v-col>
-            <v-col>
-                <ProductPriceComparision/>
-            </v-col>
-        </v-row>
-
-        <v-row>
-            <v-col>
-                <SellsByHour></SellsByHour>
-            </v-col>
-        </v-row>
+	<sales-card/>
 
 
     </div>
@@ -81,14 +23,41 @@
 
 <script>
 
-    import ProductPriceComparision from '../components/charts/product-price-comparision.vue';
-    import SellsByCategory from '../components/charts/sells-by-category.vue';
-    import SellsByHour from '../components/charts/sells-by-hour.vue';
-
+    import SuperAdminCard from "@/views/dashboard/dashboard-cards/super-admin-card.vue";
+    import AdminCard from "@/views/dashboard/dashboard-cards/admin-card.vue";
+    import SalesCard from "@/views/dashboard/dashboard-cards/sales-card.vue";
 
     export default {
-    name: "Home",
-    components: { SellsByCategory, ProductPriceComparision, SellsByHour}
-};
+    	name: "Home",
+	components: {SalesCard, AdminCard, SuperAdminCard},
+	data() {
+	    return {
+
+	    }
+	},
+	computed: {
+	    username() {
+		let user = this.$store.getters.getUser ? this.$store.getters.getUser.user.name : '';
+		return 'Bem vindo ' + user;
+	    },
+	    currentParty() {
+		return this.$store.getters.getCurrentParty;
+	    }
+	}
+
+    };
 
 </script>
+
+<style scoped>
+
+    .card-container > * {
+	margin-bottom: 1%; /* Define o espaçamento entre os elementos */
+    }
+
+    /* Remove o último margin-bottom */
+    .card-container > *:last-child {
+	margin-bottom: 0;
+    }
+
+</style>

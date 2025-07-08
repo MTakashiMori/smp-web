@@ -8,8 +8,22 @@
 
                 <v-spacer></v-spacer>
 
+		<v-btn icon @click="searchModel.status = true" v-if="!searchModel.status">
+		    <v-icon>
+			search
+		    </v-icon>
+		</v-btn>
+
                 <v-btn class="primary" @click="addOrEdit">Adicionar</v-btn>
             </v-card-title>
+
+	    <search-list-component
+		:active="searchModel.status"
+		:items="searchModel.items"
+		:filterOptions="searchModel.filterItems"
+		@close="closeSearch()"
+		@search="search($event)"
+	    />
 
             <v-card-text>
 
@@ -21,7 +35,13 @@
 <!--                        {{ item.sponsored_events.join(', ') }}-->
 <!--                    </template>-->
 
-                    <template v-slot:item.actions="{ item }">
+		    <template v-slot:item.sponsored_parties="{ item }">
+			<v-chip v-for="(party, index) in item.sponsored_parties" :key="index" class="ma-1">
+			    {{ party }}
+			</v-chip>
+		    </template>
+
+		    <template v-slot:item.actions="{ item }">
 
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
@@ -68,12 +88,13 @@
 
 <script>
 
-    import SponsorsAdd from "@/views/financial/sponsors/sponsors-add.vue";
-    import Service from "@/service";
+import SponsorsAdd from "@/views/financial/sponsors/sponsors-add.vue";
+import Service from "@/service";
+import SearchListComponent from "@/components/search-list-component.vue";
 
-    export default {
+export default {
         name: 'Sponsors',
-        components: {SponsorsAdd},
+        components: {SearchListComponent, SponsorsAdd},
         data() {
             return {
                 path: 'sponsor',
@@ -81,20 +102,38 @@
                     headers: [
                         {text: 'Nome', value: 'name'},
                         {text: 'Telefone', value: 'telephone'},
-                        {text: 'Evento patrocinadas', value: 'sponsored_events'},
+                        {text: 'Evento patrocinadas', value: 'sponsored_parties'},
                         {text: '', value: 'actions', align: 'end'},
                     ],
                     items: []
                 },
+		searchModel: {
+		    status: false,
+		    items: [
+			{label: 'Nome', field: 'name', type: 'string'},
+			{label: 'Telefone', field: 'telephone', type: 'string'},
+			{label: 'Festas', field: 'sponsored_parties', type: 'select'},
+		    ],
+		    filterItems: {
+			sponsored_parties: []
+		    }
+		},
                 modal: {
                     status: false
                 }
             }
         },
         methods: {
-            get() {
-                Service.get(this.path).then((res) => {
-                    this.datatable.items = res.data.data;
+	    getData(data = null) {
+                Service.get(this.path, data).then((res) => {
+		    this.datatable.items = res.data.data.map((item) => {
+			return {
+			    ...item,
+			    sponsored_parties: item.sponsored_parties.map((party) => {
+				return party.name
+			    })
+			}
+		    });
                 })
             },
             addOrEdit(item) {
@@ -105,10 +144,29 @@
                     this.get();
                 }
                 this.modal.status = false;
-            }
+            },
+	    search(item) {
+		this.getData(item);
+	    },
+	    closeSearch() {
+		this.searchModel.status = false;
+		this.getData();
+	    },
+	    getFilterData() {
+		Service.get(this.path + '/filter-data').then((res) => {
+		    this.searchModel.filterItems.sponsored_parties = res.data.data.parties.map((item) => {
+			return {
+			    'text': item.name,
+			    'value': item.id
+			}
+		    });
+		});
+	    },
         },
         mounted() {
-            this.get();
+	    this.getFilterData();
+            this.getData();
+
         }
     }
 

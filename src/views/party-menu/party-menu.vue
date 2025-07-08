@@ -8,7 +8,7 @@
 
                 <v-spacer></v-spacer>
 
-                <v-btn class="primary" @click="addOrEdit">Adicionar</v-btn>
+                <v-btn class="primary" @click="addOrEditPartyMenu">Adicionar</v-btn>
             </v-card-title>
 
             <v-card-text>
@@ -63,12 +63,19 @@
         </v-card>
 
 
-        <v-dialog v-model="modal.status" persistent width="60%">
-            <party-menu-item-add
-                :party_menu_id="modal.party_menu_id"
-                @close="closeModal">
-            </party-menu-item-add>
+        <v-dialog v-model="partyMenuModal.status" persistent width="60%">
+	    <party-menu-add-modal
+		:key="partyMenuModal.index"
+		@close="closePartyMenuAddModal"
+	    ></party-menu-add-modal>
         </v-dialog>
+
+	<v-dialog v-model="partyMenuProductModal.status" persistent width="60%">
+	    <party-menu-item-add
+		:party_menu_id="partyMenuProductModal.party_menu_id"
+		@close="closeModal">
+	    </party-menu-item-add>
+	</v-dialog>
 
 
     </div>
@@ -79,28 +86,35 @@
 
     import Service from "@/service";
     import PartyMenuItemAdd from "@/views/party-menu/party-menu-item-add.vue";
+    import PartyMenuAddModal from "@/views/party-menu/party-menu-add-modal.vue";
+    import AddPersonToPartyModal from "@/views/party/add-person-to-party-modal.vue";
 
     export default {
         name: 'party-menu',
-        components: {PartyMenuItemAdd},
+        components: {AddPersonToPartyModal, PartyMenuAddModal, PartyMenuItemAdd},
         data() {
             return {
                 path: 'party-menu',
                 datatable: {
                     headers: [
                         {text: 'Festa', value: 'party.name'},
+			{text: 'Cardápio', value: 'label'},
                         {text: '', value: 'actions', align: 'end'},
                     ],
                     items: []
                 },
-                modal: {
-                    status: false,
-                    party_menu_id: null
-                }
+                partyMenuModal: {
+		    index: 0,
+                    status: false
+                },
+		partyMenuProductModal: {
+		    party_menu_id: null,
+		    status: false
+		}
             }
         },
         methods: {
-            get() {
+	    getData() {
                 Service.get(this.path).then((res) => {
                     this.datatable.items = res.data.data;
                 })
@@ -108,19 +122,29 @@
             view(item) {
                 this.$router.push({name: 'partyMenuItemShow', params: {id: item.id}});
             },
-            addOrEdit(item) {
-                this.modal.status = true;
+            addOrEditPartyMenu() {
+		this.partyMenuModal.index++;
+                this.partyMenuModal.status = true;
             },
-            closeModal() {
-                this.modal.status = false;
+            closeModal(response) {
+		if(response) {
+		    this.getData();
+		}
+                this.partyMenuProductModal.status = false;
             },
+	    closePartyMenuAddModal(response) {
+		if(response) {
+		    this.getData();
+		}
+		this.partyMenuModal.status = false;
+	    },
             openAddProduct(item) {
-                this.modal.party_menu_id = item.id;
-                this.modal.status = true;
+                this.partyMenuProductModal.party_menu_id = item.id;
+                this.partyMenuProductModal.status = true;
             }
         },
         mounted() {
-            this.get();
+            this.getData();
         }
     }
 

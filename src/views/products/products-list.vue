@@ -8,8 +8,21 @@
 
                 <v-spacer></v-spacer>
 
+		<v-btn icon @click="searchModel.status = true" v-if="!searchModel.status">
+		    <v-icon>
+			search
+		    </v-icon>
+		</v-btn>
+
                 <v-btn class="primary" @click="addOrEdit">Adicionar</v-btn>
             </v-card-title>
+
+	    <search-list-component
+		:active="searchModel.status"
+		:items="searchModel.items"
+		@close="closeSearch()"
+		@search="search($event)"
+	    />
 
             <v-card-text>
 
@@ -56,10 +69,11 @@
 
 import Service from "@/service";
 import ProductsAdd from "@/views/products/products-add.vue";
+import SearchListComponent from "@/components/search-list-component.vue";
 
 export default {
     name: 'Products',
-    components: {ProductsAdd},
+    components: {SearchListComponent, ProductsAdd},
     data() {
         return {
             path: 'product',
@@ -70,14 +84,20 @@ export default {
                 ],
                 items: []
             },
+	    searchModel: {
+		status: false,
+		items: [
+		    {label: 'Nome', field: 'name', type: 'String'},
+		]
+	    },
             modal: {
                 status: false
             }
         }
     },
     methods: {
-        get() {
-            Service.get(this.path).then((res) => {
+	getData(data = null) {
+            Service.get(this.path, data).then((res) => {
                 this.datatable.items = res.data.data;
             })
         },
@@ -89,10 +109,17 @@ export default {
                 this.get();
             }
             this.modal.status = false;
-        }
+        },
+	search(item) {
+	    this.getData(item);
+	},
+	closeSearch() {
+	    this.searchModel.status = false;
+	    this.getData();
+	},
     },
     mounted() {
-        this.get();
+        this.getData();
     }
 }
 

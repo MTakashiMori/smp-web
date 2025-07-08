@@ -2,6 +2,7 @@ import axios, {AxiosError} from "axios";
 import messages from "@/constants/messages";
 import Cookies from "js-cookie";
 import store from "@/store";
+import router from '@/router';
 
 export default {
 
@@ -43,6 +44,8 @@ export default {
             .catch((error) => {
                 // this.notify(messages.messages.MSG002);
                 console.log(error);
+                throw new Error(error);
+                //TODO WORK HERE TO RETURN ERROR TO METHOD
             });
     },
 
@@ -90,8 +93,14 @@ export default {
                 return response;
             })
             .catch((error) => {
+                console.log(error.response);
+                if(error.response.status == 401) {
+                    this.notify(messages.messages.MSG005);
+                    router.push({name: 'login'});
+                }
+
                 // this.notify(messages.messages.MSG002);
-                console.log(error);
+                // console.log(error.response);
             });
 
     },

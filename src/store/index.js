@@ -9,6 +9,7 @@ export default new Vuex.Store({
         isLoading: false,
         drawer: true,
         user: null,
+        currentParty: null,
         notify: {
             status: false,
             message: null,
@@ -25,6 +26,10 @@ export default new Vuex.Store({
         logout(state) {
             Cookies.remove('smp_token');
             state.user = null;
+            state.currentParty = null;
+        },
+        setCurrentParty(state, party){
+            state.currentParty = party;
         },
         setNotify(state, data) {
             if(state.notify.status) {
@@ -57,7 +62,10 @@ export default new Vuex.Store({
         },
         notify({commit}, message, type= null) {
             commit('setNotify', message, type);
-        }
+        },
+        setCurrentParty({commit}, data) {
+            commit('setCurrentParty', data);
+        },
     },
     getters: {
         getDrawer: state => {
@@ -65,6 +73,9 @@ export default new Vuex.Store({
         },
         getUser: state => {
             return state.user;
+        },
+        getCurrentParty: state => {
+            return state.currentParty;
         },
         isLogged: state => {
             return state.user !== null;

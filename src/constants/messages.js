@@ -4,5 +4,7 @@ export default {
         MSG002: 'Erro - Por favor, tente novamente',
         MSG003: 'Registro criado com sucesso',
         MSG004: 'Registro atualizado com sucesso',
+        MSG005: 'Por favor, faça login novamente',
+
     }
 }

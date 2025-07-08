@@ -6,15 +6,17 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/auth/login.vue";
 import Register from "@/views/auth/register.vue";
 import SampleSells from '@/views/SampleSells.vue';
-import Sponsors from '@/views/financial/sponsors.vue';
+import Sponsors from '@/views/financial/sponsors/sponsors.vue';
 import Budgets from '@/views/financial/budgets.vue';
 import Transactions from '@/views/financial/transactions.vue';
-import Party from "@/views/party/party.vue";
-import Products from "@/views/products/products.vue";
+import Party from "@/views/party/party-list.vue";
+import ProductsList from "@/views/products/products-list.vue";
 import PartyMenu from "@/views/party-menu/party-menu.vue";
 import PartyMenuItem from "@/views/party-menu/party-menu-item.vue";
 import Financials from "@/views/financial/financials.vue";
 import Profile from "@/views/user/profile.vue";
+import Sales from "@/views/sales/sales.vue";
+import PartyDetails from "@/views/party/party-details.vue";
 
 Vue.use(VueRouter);
 
@@ -45,16 +47,16 @@ const routes = [
             },
         ]
     },
-    {
-        path: "/sales",
-        component: ContentComponent,
-        children: [
-            {
-                path: '',
-                component: SampleSells,
-            },
-        ]
-    },
+    // {
+    //     path: "/sales",
+    //     component: ContentComponent,
+    //     children: [
+    //         {
+    //             path: '',
+    //             component: SampleSells,
+    //         },
+    //     ]
+    // },
     {
         path: "/party",
         component: ContentComponent,
@@ -62,6 +64,13 @@ const routes = [
             {
                 path: '',
                 component: Party,
+                name: 'partyList'
+            },
+            {
+                path: 'view',
+                component: PartyDetails,
+                name: 'partyDetails',
+                props: true
             },
         ]
     },
@@ -71,7 +80,7 @@ const routes = [
         children: [
             {
                 path: '',
-                component: Products,
+                component: ProductsList,
             },
         ]
     },
@@ -80,7 +89,7 @@ const routes = [
         component: ContentComponent,
         children: [
             {
-                path: ':id',
+                path: 'view',
                 component: PartyMenuItem,
                 name: 'partyMenuItemShow'
             },
@@ -121,7 +130,19 @@ const routes = [
                 ]
             }
         ]
-    }
+    },
+    {
+        path: "/sales",
+        component: ContentComponent,
+        children: [
+            {
+                path: '',
+                component: Sales,
+                name: 'partyMenuItem'
+            },
+
+        ]
+    },
 ];
 
 const router = new VueRouter({

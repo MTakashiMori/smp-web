@@ -65,8 +65,20 @@ export default {
 
     },
 
-    remove() {
+    remove(path, id) {
+        let config = null;
 
+        return axios.delete((process.env.VUE_APP_API_URL + path + '/' + id), config)
+            .then((response) => {
+                this.notify(messages.messages.MSG006);
+                return response;
+            })
+            .catch((error) => {
+                // this.notify(messages.messages.MSG002);
+                console.log(error);
+                throw new Error(error);
+                //TODO WORK HERE TO RETURN ERROR TO METHOD
+            });
     },
 
     login(data, path = 'auth/login') {

@@ -36,14 +36,14 @@
                             <span>Visualizar cardápio</span>
                         </v-tooltip><!-- view -->
 
-<!--                        <v-tooltip bottom>-->
-<!--                            <template v-slot:activator="{ on }">-->
-<!--                                <v-btn icon v-on="on" @click="">-->
-<!--                                    <v-icon>delete</v-icon>-->
-<!--                                </v-btn>-->
-<!--                            </template>-->
-<!--                            <span>Remover</span>-->
-<!--                        </v-tooltip>&lt;!&ndash; delete &ndash;&gt;-->
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn icon v-on="on" @click="deletePartyMenu(item)">
+                                    <v-icon>delete</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Remover</span>
+                        </v-tooltip><!-- delete -->
 
 <!--                        <v-tooltip bottom>-->
 <!--                            <template v-slot:activator="{ on }">-->
@@ -64,19 +64,18 @@
 
 
         <v-dialog v-model="partyMenuModal.status" persistent width="60%">
-	    <party-menu-add-modal
-		:key="partyMenuModal.index"
-		@close="closePartyMenuAddModal"
-	    ></party-menu-add-modal>
+            <party-menu-add-modal
+                :key="partyMenuModal.index"
+                @close="closePartyMenuAddModal"
+            ></party-menu-add-modal>
         </v-dialog>
 
-	<v-dialog v-model="partyMenuProductModal.status" persistent width="60%">
-	    <party-menu-item-add
-		:party_menu_id="partyMenuProductModal.party_menu_id"
-		@close="closeModal">
-	    </party-menu-item-add>
-	</v-dialog>
-
+        <v-dialog v-model="partyMenuProductModal.status" persistent width="60%">
+            <party-menu-item-add
+                :party_menu_id="partyMenuProductModal.party_menu_id"
+                @close="closeModal">
+            </party-menu-item-add>
+        </v-dialog>
 
     </div>
 
@@ -98,13 +97,13 @@
                 datatable: {
                     headers: [
                         {text: 'Festa', value: 'party.name'},
-			{text: 'Cardápio', value: 'label'},
+			            {text: 'Cardápio', value: 'label'},
                         {text: '', value: 'actions', align: 'end'},
                     ],
                     items: []
                 },
                 partyMenuModal: {
-		    index: 0,
+		            index: 0,
                     status: false
                 },
 		partyMenuProductModal: {
@@ -123,24 +122,30 @@
                 this.$router.push({name: 'partyMenuItemShow', params: {id: item.id}});
             },
             addOrEditPartyMenu() {
-		this.partyMenuModal.index++;
+		        this.partyMenuModal.index++;
                 this.partyMenuModal.status = true;
             },
             closeModal(response) {
-		if(response) {
-		    this.getData();
-		}
+                if(response) {
+                    this.getData();
+                }
                 this.partyMenuProductModal.status = false;
             },
-	    closePartyMenuAddModal(response) {
-		if(response) {
-		    this.getData();
-		}
-		this.partyMenuModal.status = false;
-	    },
+            closePartyMenuAddModal(response) {
+                if(response) {
+                    this.getData();
+                }
+                this.partyMenuModal.status = false;
+            },
             openAddProduct(item) {
                 this.partyMenuProductModal.party_menu_id = item.id;
                 this.partyMenuProductModal.status = true;
+            },
+            deletePartyMenu(item) {
+                Service.remove(this.path, item.id)
+                    .then((res) => {
+                        this.getData();
+                });
             }
         },
         mounted() {

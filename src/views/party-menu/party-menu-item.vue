@@ -4,7 +4,7 @@
         <v-card>
 
             <v-card-title>
-                Cardápios
+                Cardápio - {{ partyName }} - {{ menuLabel }}
 
                 <v-spacer></v-spacer>
 
@@ -55,6 +55,8 @@
         data() {
             return {
                 path: 'party-menu-products',
+                partyName: '',
+                menuLabel: '',
                 datatable: {
                     headers: [
                         {text: 'Produto', value: 'product.name'},
@@ -68,6 +70,8 @@
         methods: {
             get() {
                 Service.get(this.path, {party_menu_id: this.$route.params.id}).then((res) => {
+                    this.partyName = res.data.data[0].party_name;
+                    this.menuLabel = res.data.data[0].menu_label;
                     this.datatable.items = res.data.data;
                 })
             },

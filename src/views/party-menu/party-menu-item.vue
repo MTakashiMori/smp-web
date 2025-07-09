@@ -73,7 +73,7 @@
                     this.partyName = res.data.data[0].party_name;
                     this.menuLabel = res.data.data[0].menu_label;
                     this.datatable.items = res.data.data;
-                })
+                });
             },
             goBack() {
                 this.$router.push({name: 'partyMenuItem'});

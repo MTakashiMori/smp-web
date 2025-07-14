@@ -74,16 +74,16 @@ const routes = [
             },
         ]
     },
-    {
-        path: "/products",
-        component: ContentComponent,
-        children: [
-            {
-                path: '',
-                component: ProductsList,
-            },
-        ]
-    },
+    // {
+    //     path: "/products",
+    //     component: ContentComponent,
+    //     children: [
+    //         {
+    //             path: '',
+    //             component: ProductsList,
+    //         },
+    //     ]
+    // },
     {
         path: "/party-menu",
         component: ContentComponent,

@@ -64,15 +64,7 @@
                 >
 
                     <template v-slot:item.price="{item, header}">
-                        <v-edit-dialog
-                            :key="header.value"
-                            :return-value.sync="item[header.value]"
-                        >
-                            {{ item[header.value] }}
-                            <template v-slot:input>
-                                <money v-model="item[header.value]" v-bind="money"></money>
-                            </template>
-                        </v-edit-dialog>
+                        <v-text-field v-model.lazy="item[header.value]" v-money="money"></v-text-field>
                     </template>
 
                     <template v-slot:item.actions="{ item }">
@@ -106,11 +98,11 @@
 <script>
 
     import Service from "@/service";
-    import {Money} from 'v-money';
+    import {VMoney} from 'v-money';
 
     export default {
         name: 'party-menu-item-add',
-        components: {Money},
+        directives: {money: VMoney},
         props: {
             party_menu_id: null
         },
@@ -139,7 +131,8 @@
                     prefix: 'R$ ',
                     precision: 2,
                     masked: false
-                }
+                },
+                wasProductAdded: false
             }
         },
         methods: {
@@ -148,14 +141,15 @@
                     items: this.datatable.productToAddList,
                     party_menu_id: this.party_menu_id
                 }).then((res) => {
-                    console.log(res);
+                    this.wasProductAdded = true;
+                    this.$emit('close', this.wasProductAdded);
                 }).finally(() => {
 
                 });
-                this.$emit('close');
+
             },
             close() {
-               this.$emit('close');
+                this.$emit('close', this.wasProductAdded);
             },
             searchProducts() {
                 if(!(this.search.length > 3) || this.searching) {

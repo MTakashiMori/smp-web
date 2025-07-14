@@ -70,11 +70,15 @@
             ></party-menu-add-modal>
         </v-dialog>
 
-        <v-dialog v-model="partyMenuProductModal.status" persistent width="60%">
-            <party-menu-item-add
-                :party_menu_id="partyMenuProductModal.party_menu_id"
+        <v-dialog v-model="productModal.status" persistent width="60%">
+<!--            <party-menu-item-add-->
+<!--                :party_menu_id="productModal.party_menu_id"-->
+<!--                @close="closeModal">-->
+<!--            </party-menu-item-add>-->
+            <product-add-to-party-modal
+                :party_menu_id="productModal.party_menu_id"
                 @close="closeModal">
-            </party-menu-item-add>
+            </product-add-to-party-modal>
         </v-dialog>
 
     </div>
@@ -84,13 +88,13 @@
 <script>
 
     import Service from "@/service";
-    import PartyMenuItemAdd from "@/views/party-menu/party-menu-item-add.vue";
     import PartyMenuAddModal from "@/views/party-menu/party-menu-add-modal.vue";
     import AddPersonToPartyModal from "@/views/party/add-person-to-party-modal.vue";
+    import ProductAddToPartyModal from "@/views/products/product-add-to-party-modal.vue";
 
     export default {
         name: 'party-menu',
-        components: {AddPersonToPartyModal, PartyMenuAddModal, PartyMenuItemAdd},
+        components: {ProductAddToPartyModal, AddPersonToPartyModal, PartyMenuAddModal},
         data() {
             return {
                 path: 'party-menu',
@@ -106,7 +110,7 @@
 		            index: 0,
                     status: false
                 },
-		partyMenuProductModal: {
+		productModal: {
 		    party_menu_id: null,
 		    status: false
 		}
@@ -129,7 +133,7 @@
                 if(response) {
                     this.getData();
                 }
-                this.partyMenuProductModal.status = false;
+                this.productModal.status = false;
             },
             closePartyMenuAddModal(response) {
                 if(response) {
@@ -138,8 +142,8 @@
                 this.partyMenuModal.status = false;
             },
             openAddProduct(item) {
-                this.partyMenuProductModal.party_menu_id = item.id;
-                this.partyMenuProductModal.status = true;
+                this.productModal.party_menu_id = item.id;
+                this.productModal.status = true;
             },
             deletePartyMenu(item) {
                 Service.remove(this.path, item.id)

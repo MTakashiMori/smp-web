@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        isLoading: false,
+        isLoading: [],
         drawer: true,
         user: null,
         currentParty: null,
@@ -48,6 +48,13 @@ export default new Vuex.Store({
             state.notify.type = data.type;
 
             state.notify.status = true;
+        },
+        setIsLoading(state, key) {
+            if (state.isLoading.indexOf(key) !== -1) {
+                state.isLoading.splice(state.isLoading.indexOf(key), 1)
+            } else {
+                state.isLoading.push(key);
+            }
         }
     },
     actions: {
@@ -66,6 +73,9 @@ export default new Vuex.Store({
         setCurrentParty({commit}, data) {
             commit('setCurrentParty', data);
         },
+        isLoading({commit}, key) {
+            commit('setIsLoading', key);
+        }
     },
     getters: {
         getDrawer: state => {
@@ -82,6 +92,10 @@ export default new Vuex.Store({
         },
         getNotify: state => {
             return state.notify;
+        },
+        getIsLoading: state => {
+            console.log(state.isLoading);
+            return state.isLoading.length > 0;
         }
     },
     modules: {}

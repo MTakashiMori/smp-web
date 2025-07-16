@@ -1,6 +1,6 @@
 <template>
 
-    <v-navigation-drawer app :mini-variant.sync="drawerModel" v-if="user">
+    <v-navigation-drawer app :mini-variant.sync="drawerModel" v-if="user" permanent>
 
         <v-img :src="logo" :eager="true"></v-img>
 

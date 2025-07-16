@@ -19,10 +19,10 @@
             </v-card-title>
 
 	    <search-list-component
-		:active="searchModel.status"
-		:items="searchModel.items"
-		@close="closeSearch()"
-		@search="search($event)"
+            :active="searchModel.status"
+            :items="searchModel.items"
+            @close="closeSearch()"
+            @search="search($event)"
 	    />
 
             <v-card-text>
@@ -38,14 +38,14 @@
 
                     <template v-slot:item.actions="{ item }">
 
-			<v-tooltip bottom>
-			    <template v-slot:activator="{ on }">
-				<v-btn icon v-on="on" @click="addPersonToParty(item)">
-				    <v-icon>person_add</v-icon>
-				</v-btn>
-			    </template>
-			    <span>Adicionar pessoa</span>
-			</v-tooltip><!-- rate by business -->
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                            <v-btn icon v-on="on" @click="addPersonToParty(item)">
+                                <v-icon>person_add</v-icon>
+                            </v-btn>
+                            </template>
+                            <span>Adicionar pessoa</span>
+                        </v-tooltip><!-- rate by business -->
 
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on }">
@@ -104,13 +104,13 @@
             <party-add @close="closeModal"/>
         </v-dialog>
 
-	<add-person-to-party-modal
-	    :key="addPersonToPartyModal.index"
-	    :partyId="addPersonToPartyModal.partyId"
-	    :partyName="addPersonToPartyModal.partyName"
-	    :status="addPersonToPartyModal.status"
-	    @close="closeAddPersonToPartyModal"
-	/>
+        <add-person-to-party-modal
+            :key="addPersonToPartyModal.index"
+            :partyId="addPersonToPartyModal.partyId"
+            :partyName="addPersonToPartyModal.partyName"
+            :status="addPersonToPartyModal.status"
+            @close="closeAddPersonToPartyModal"
+        />
 
     </div>
 
@@ -134,47 +134,47 @@ export default {
                     {text: 'Nome', value: 'name'},
                     {text: 'Data', value: 'date'},
                     {text: 'Referencia', value: 'reference'},
-                    {text: 'Endereço', value: 'address'},
+                    {text: 'Endereço', value: 'address.address'},
                     {text: '', value: 'actions', align: 'end'},
                 ],
                 items: []
             },
-	    searchModel: {
-		status: false,
-		items: [
-		    {label: 'Nome', field: 'name', type: 'string'},
-		]
-	    },
+            searchModel: {
+                status: false,
+                items: [
+                    {label: 'Nome', field: 'name', type: 'string'},
+                ]
+            },
             modal: {
                 status: false
             },
-	    addPersonToPartyModal: {
-		index: 0,
-		status: false,
-		partyId: null,
-		partyName: null
-	    }
+            addPersonToPartyModal: {
+                index: 0,
+                status: false,
+                partyId: null,
+                partyName: null
+            }
         }
     },
     methods: {
-	getData(data = null) {
-	    Service.get(this.path, data).then((res) => {
-		this.datatable.items = res.data.data;
-	    })
+        getData(data = null) {
+            Service.get(this.path, data, false).then((res) => {
+                this.datatable.items = res.data.data;
+            });
         },
-	search(item) {
-	    this.getData(item);
-	},
-	closeSearch() {
-	    this.searchModel.status = false;
-	    this.getData();
-	},
+        search(item) {
+            this.getData(item);
+        },
+        closeSearch() {
+            this.searchModel.status = false;
+            this.getData();
+        },
         addOrEdit(item) {
             this.modal.status = true;
         },
-	view(item) {
-	    this.$router.push({name: 'partyDetails', params: {id: item.id}});
-	},
+        view(item) {
+            this.$router.push({name: 'partyDetails', params: {id: item.id}});
+        },
         closeModal(res) {
             if(res) {
                 this.getData();
@@ -187,17 +187,17 @@ export default {
             // }
             // this.$router.push({name: 'partyMenuItem'});
         },
-	addPersonToParty(item) {
-	    this.addPersonToPartyModal.partyName = item.name;
-	    this.addPersonToPartyModal.partyId = item.id;
-	    this.addPersonToPartyModal.index++;
-	    this.addPersonToPartyModal.status = true;
-	},
-	closeAddPersonToPartyModal() {
-	    this.addPersonToPartyModal.status = false;
-	    this.addPersonToPartyModal.partyId = null;
-	    this.addPersonToPartyModal.partyName = null;
-	}
+        addPersonToParty(item) {
+            this.addPersonToPartyModal.partyName = item.name;
+            this.addPersonToPartyModal.partyId = item.id;
+            this.addPersonToPartyModal.index++;
+            this.addPersonToPartyModal.status = true;
+        },
+        closeAddPersonToPartyModal() {
+            this.addPersonToPartyModal.status = false;
+            this.addPersonToPartyModal.partyId = null;
+            this.addPersonToPartyModal.partyName = null;
+        }
     },
     mounted() {
         this.getData();

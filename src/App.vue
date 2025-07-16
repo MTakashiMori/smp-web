@@ -3,11 +3,10 @@
 
         <navigation-drawer></navigation-drawer>
         <app-bar></app-bar>
-        <!-- <v-main> -->
             <v-content>
+                <v-overlay :value="isLoading" absolute></v-overlay>
                 <content-component></content-component>
             </v-content>
-        <!-- </v-main> -->
 
         <FooterComponent></FooterComponent>
 
@@ -38,7 +37,14 @@
                     this.$store.dispatch('setUser', {user: res.data.data});
                 });
             }
-
+        },
+        computed: {
+            isLoading: {
+                get() {
+                    return this.$store.getters.getIsLoading;
+                },
+                set(){}
+            },
         }
     };
 

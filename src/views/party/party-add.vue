@@ -48,7 +48,26 @@
 
                         <v-row>
                             <v-col>
-                                <v-text-field label="Endereço" v-model="model.address" required :rules=rules.required></v-text-field>
+                                <v-text-field label="Endereco" v-model="model.address.address" required :rules=rules.required></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-text-field label="Complemento" v-model="model.address.complement"></v-text-field>
+                            </v-col>
+                            <v-col>
+                                <v-text-field label="CEP" v-model="zipcode" required :rules=rules.required v-mask="'#####-###'"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-text-field label="Bairro" v-model="model.address.neighborhood" required :rules=rules.required></v-text-field>
+                            </v-col>
+                            <v-col>
+                                <v-text-field label="Cidade" v-model="model.address.city" disabled required :rules=rules.required></v-text-field>
+                            </v-col>
+                            <v-col>
+                                <v-text-field label="Cidade" v-model="model.address.uf" disabled required :rules=rules.required></v-text-field>
                             </v-col>
                         </v-row>
 
@@ -83,8 +102,16 @@ export default {
                 name: null,
                 date: [],
                 reference: null,
-                address: null
+                address: {
+                    address: null,
+                    complement: '',
+                    cep: '',
+                    neighborhood: '',
+                    city: '',
+                    uf: ''
+                }
             },
+            zipcode: '',
             rules: {
                 required: [
                     v => !!v || 'Este item é obrigatório'
@@ -103,18 +130,36 @@ export default {
             delete(this.model.date);
 
             Service.save(this.path, this.model).then((res) => {
-                console.log('created', res);
                 this.$refs.sponsorAdd.reset();
                 this.$emit('close', true);
             });
 
         },
-        close()
-        {
+        close() {
             this.$refs.sponsorAdd.reset();
 
             this.$emit('close', false);
         },
+        getAddress(zipcode) {
+            if(zipcode.length <= 8) {
+                return;
+            }
+            Service.getAddressByZipCode(zipcode).then((res) => {
+                this.model.address = {
+                    address: res.data.logradouro,
+                    complement: res.data.complemento,
+                    cep: res.data.cep,
+                    neighborhood: res.data.bairro,
+                    city: res.data.localidade,
+                    uf: res.data.uf
+                }
+            });
+        }
+    },
+    watch: {
+        zipcode() {
+            this.getAddress(this.zipcode)
+        }
     },
     computed: {
         dateRangeText () {

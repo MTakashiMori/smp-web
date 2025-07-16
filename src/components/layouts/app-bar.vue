@@ -20,7 +20,7 @@
 		<span>Selecionar festa</span>
 	    </v-tooltip><!-- rate by business -->
 
-            <v-toolbar-items class="hidden-sm-and-down">
+            <v-toolbar-items>
 
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
@@ -83,15 +83,15 @@
 
     export default {
         name: 'app-bar',
-	components: {SelectPartyModal},
+	    components: {SelectPartyModal},
         data() {
             return {
                 drawer: false,
                 group: null,
-		selectPartyModal: {
-		    modalKey: 1,
-		    status: false
-		}
+                selectPartyModal: {
+                    modalKey: 1,
+                    status: false
+                }
             }
         },
         methods: {
@@ -108,10 +108,10 @@
                 this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
                 localStorage.setItem('dark_theme', this.$vuetify.theme.dark);
             },
-	    selectParty() {
-		this.selectPartyModal.modalKey++;
-		this.selectPartyModal.status = true;
-	    },
+            selectParty() {
+                this.selectPartyModal.modalKey++;
+                this.selectPartyModal.status = true;
+            },
             profile() {
                 this.$router.push({name: 'profile', params: {id: this.$store.getters.getUser.id}});
             },
@@ -124,17 +124,17 @@
                     'type': 'warning'
                 })
             },
-	    closeSelectPartyModal() {
-		this.selectPartyModal.status = false;
-	    }
+            closeSelectPartyModal() {
+                this.selectPartyModal.status = false;
+            }
         },
         computed: {
             user() {
                 return this.$store.getters.getUser;
             },
-	    currentParty() {
-		return this.$store.getters.getCurrentParty;
-	    }
+            currentParty() {
+                return this.$store.getters.getCurrentParty;
+            }
         }
     }
 

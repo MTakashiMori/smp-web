@@ -6,21 +6,30 @@ import router from '@/router';
 
 export default {
 
-    get(path, data) {
+    get(path, data, notifySuccess = true) {
 
         let config = {
             headers: { Authorization: `Bearer ${Cookies.get('smp_token')}` }
         };
         config.params = data;
 
+        const loadingKey = (Math.random() + 1).toString(36).substring(2);
+
+        this.setLoading(loadingKey);
+
         return axios.get((process.env.VUE_APP_API_URL + path), config)
             .then((response) => {
-                this.notify(messages.messages.MSG001);
+                if(notifySuccess) {
+                    this.notify(messages.messages.MSG001);
+                }
                 return response;
             })
             .catch((error) => {
                 this.notify(messages.messages.MSG002);
                 console.log(error);
+            })
+            .finally(() => {
+                this.setLoading(loadingKey);
             });
 
     },
@@ -117,11 +126,32 @@ export default {
 
     },
 
+    getAddressByZipCode(zipCode) {
+        return axios.get(('https://viacep.com.br/ws/' + zipCode +'/json/'))
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                console.log(error.response);
+                if(error.response.status == 401) {
+                    this.notify(messages.messages.MSG005);
+                    router.push({name: 'login'});
+                }
+
+                // this.notify(messages.messages.MSG002);
+                // console.log(error.response);
+            });
+    },
+
     notify( message, type= null) {
         store.dispatch('notify', {
             'message': message,
             'type': type
         })
+    },
+
+    setLoading(key) {
+        store.dispatch('isLoading', key);
     }
 
 }

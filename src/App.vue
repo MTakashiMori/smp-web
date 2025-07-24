@@ -3,10 +3,10 @@
 
         <navigation-drawer></navigation-drawer>
         <app-bar></app-bar>
-            <v-content>
+            <v-main>
                 <v-overlay :value="isLoading" absolute></v-overlay>
                 <content-component></content-component>
-            </v-content>
+            </v-main>
 
         <FooterComponent></FooterComponent>
 

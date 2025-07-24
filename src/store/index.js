@@ -14,7 +14,8 @@ export default new Vuex.Store({
             status: false,
             message: null,
             type: null
-        }
+        },
+        selectPartyModalStatus: false,
     },
     mutations: {
         toggleSideMenu(state){
@@ -55,6 +56,9 @@ export default new Vuex.Store({
             } else {
                 state.isLoading.push(key);
             }
+        },
+        setSelectPartyModalStatus(state, status) {
+            state.selectPartyModalStatus = status;
         }
     },
     actions: {
@@ -75,6 +79,9 @@ export default new Vuex.Store({
         },
         isLoading({commit}, key) {
             commit('setIsLoading', key);
+        },
+        setSelectPartyModalStatus({commit}, status) {
+            commit('setSelectPartyModalStatus', status);
         }
     },
     getters: {
@@ -94,8 +101,10 @@ export default new Vuex.Store({
             return state.notify;
         },
         getIsLoading: state => {
-            console.log(state.isLoading);
             return state.isLoading.length > 0;
+        },
+        getSelectPartyModalStatus: state => {
+            return state.selectPartyModalStatus;
         }
     },
     modules: {}

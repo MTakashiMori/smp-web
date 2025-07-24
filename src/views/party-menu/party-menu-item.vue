@@ -51,6 +51,7 @@
         <v-dialog v-model="partyMenuProductModal.status" persistent width="60%">
             <product-add-to-party-modal
                 :party_menu_id="partyMenuProductModal.party_menu_id"
+                :key="partyMenuProductModal.key"
                 @close="closeAddProductModal($event)">
             </product-add-to-party-modal>
         </v-dialog>
@@ -75,6 +76,7 @@
                 datatable: {
                     headers: [
                         {text: 'Produto', value: 'name'},
+                        {text: 'Grupo', value: 'group_name'},
                         {text: 'Preço', value: 'price'},
                         {text: '', value: 'actions', align: 'end'},
                     ],
@@ -82,6 +84,7 @@
                 },
                 partyMenuProductModal: {
                     party_menu_id: null,
+                    key: 0,
                     status: false
                 }
             }
@@ -98,6 +101,7 @@
                 this.$router.push({name: 'partyMenuItem'});
             },
             openAddProductModal() {
+                this.partyMenuProductModal.key++;
                 this.partyMenuProductModal.party_menu_id = this.$route.params.id;
                 this.partyMenuProductModal.status = true;
             },

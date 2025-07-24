@@ -69,8 +69,8 @@
         </v-app-bar>
 
 	<select-party-modal
-	    v-if="selectPartyModal.status"
-	    :status="selectPartyModal.status"
+	    v-if="selectPartyModalStatus"
+	    :status="selectPartyModalStatus"
 	    @close="closeSelectPartyModal"
 	/>
 
@@ -109,8 +109,7 @@
                 localStorage.setItem('dark_theme', this.$vuetify.theme.dark);
             },
             selectParty() {
-                this.selectPartyModal.modalKey++;
-                this.selectPartyModal.status = true;
+                this.$store.dispatch('setSelectPartyModalStatus', true);
             },
             profile() {
                 this.$router.push({name: 'profile', params: {id: this.$store.getters.getUser.id}});
@@ -125,7 +124,7 @@
                 })
             },
             closeSelectPartyModal() {
-                this.selectPartyModal.status = false;
+                this.$store.dispatch('setSelectPartyModalStatus', false);
             }
         },
         computed: {
@@ -134,6 +133,9 @@
             },
             currentParty() {
                 return this.$store.getters.getCurrentParty;
+            },
+            selectPartyModalStatus() {
+                return this.$store.getters.getSelectPartyModalStatus;
             }
         }
     }

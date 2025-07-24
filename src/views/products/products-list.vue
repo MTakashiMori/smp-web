@@ -80,16 +80,17 @@ export default {
             datatable: {
                 headers: [
                     {text: 'Nome', value: 'name'},
+                    {text: 'Grupo', value: 'group_name'},
                     {text: '', value: 'actions', align: 'end'},
                 ],
                 items: []
             },
-	    searchModel: {
-		status: false,
-		items: [
-		    {label: 'Nome', field: 'name', type: 'String'},
-		]
-	    },
+            searchModel: {
+                status: false,
+                items: [
+                    {label: 'Nome', field: 'name', type: 'String'},
+                ]
+            },
             modal: {
                 status: false
             }

@@ -99,7 +99,6 @@ export default {
                 return;
             }
             Service.save(this.path, this.model).then((res) => {
-                console.log('created', res);
                 this.$refs.sponsorAdd.reset();
                 this.$emit('close', true);
             });

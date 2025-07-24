@@ -20,21 +20,40 @@
                 </v-row>
                 <v-row>
                     <v-col>
+                        <label class="body-1 font-weight-medium mb-2 d-block">Ícone do grupo</label>
+                        <v-btn
+                            v-for="icon in iconList"
+                            :key="icon"
+                            icon
+                            class="ma-2"
+                            :color="icon === model.icon ? 'primary' : 'black'"
+                            @click="selectIcon(icon)"
+                        >
+                            <v-icon :color="icon === model.icon ? 'white' : 'black'">
+                                {{ icon }}
+                            </v-icon>
+                        </v-btn>
                         <v-text-field
-                            label="Icone do grupo"
                             v-model="model.icon"
-                        ></v-text-field>
+                            label="Ícone selecionado"
+                            readonly
+                            outlined
+                        >
+                            <template v-slot:append>
+                                <v-icon>{{ model.icon }}</v-icon>
+                            </template>
+                        </v-text-field>
                     </v-col>
                     <v-col>
-                        <v-text-field
-                            label="Cor do grupo"
+                        <label class="body-1 font-weight-medium mb-2 d-block">Cor do grupo</label>
+                        <v-color-picker
                             v-model="model.color"
-                        ></v-text-field>
-<!--                        <v-color-picker-->
-<!--                            hide-canvas-->
-<!--                            mode="hexa"-->
-<!--                            swatches-max-height="100"-->
-<!--                        ></v-color-picker>-->
+                            mode="hex"
+                            flat
+                            hide-inputs
+                            :swatches="pastelColorsList"
+                            show-swatches
+                        ></v-color-picker>
                     </v-col>
                 </v-row>
 
@@ -70,10 +89,42 @@
                     name: '',
                     icon: '',
                     color: ''
-                }
+                },
+                selectedIcon: '',
+                iconList: [
+                    "restaurant",
+                    "restaurant_menu",
+                    "fastfood",
+                    "local_dining",
+                    "bakery_dining",
+                    "ramen_dining",
+                    "lunch_dining",
+                    "dinner_dining",
+                    "icecream",
+                    "cake",
+                    "coffee",
+                    "wine_bar",
+                    "breakfast_dining",
+                    "kebab_dining",
+                    "emoji_food_beverage",
+                    'liquor',
+                    'bakery_dining',
+                    'food_bank',
+                    'nightlife',
+                    'local_bar'
+                ],
+                pastelColorsList: [
+                    ["#FFB3BA", "#FFDFBA", "#FFFFBA"],
+                    ["#BAFFC9", "#BAE1FF", "#E2BAFF"],
+                    ["#D5F4E6", "#FFF0F5", "#F0F8FF"],
+                    ["#FBE4D5", "#E6E6FA", "#FADADD"]
+                ]
             }
         },
         methods: {
+            selectIcon(icon) {
+                this.model.icon = icon;
+            },
             save() {
                 Service.save(this.path, {
                     party_menu_id: this.party_menu_id,

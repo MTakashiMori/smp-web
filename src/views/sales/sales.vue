@@ -3,6 +3,7 @@
 
         <div>
             <v-card>
+
                 <v-card-title>
                     Vendas/Caixa
 
@@ -13,7 +14,9 @@
             </v-card>
 
         </div>
+
         <br>
+
         <v-row>
             <v-col cols="8">
                 <sales-by-product/>

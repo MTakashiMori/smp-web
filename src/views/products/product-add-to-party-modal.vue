@@ -147,6 +147,7 @@
                     });
             },
             openAddGroup() {
+                this.partyMenuGroupModal.index++;
                 this.partyMenuGroupModal.status = true;
             },
             closePartyMenuGroupModal(res) {

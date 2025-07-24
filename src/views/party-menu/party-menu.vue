@@ -71,10 +71,6 @@
         </v-dialog>
 
         <v-dialog v-model="productModal.status" persistent width="60%">
-<!--            <party-menu-item-add-->
-<!--                :party_menu_id="productModal.party_menu_id"-->
-<!--                @close="closeModal">-->
-<!--            </party-menu-item-add>-->
             <product-add-to-party-modal
                 :party_menu_id="productModal.party_menu_id"
                 @close="closeModal">

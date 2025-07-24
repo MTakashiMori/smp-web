@@ -10,7 +10,6 @@ import Sponsors from '@/views/financial/sponsors/sponsors.vue';
 import Budgets from '@/views/financial/budgets.vue';
 import Transactions from '@/views/financial/transactions.vue';
 import Party from "@/views/party/party-list.vue";
-import ProductsList from "@/views/products/products-list.vue";
 import PartyMenu from "@/views/party-menu/party-menu.vue";
 import PartyMenuItem from "@/views/party-menu/party-menu-item.vue";
 import Financials from "@/views/financial/financials.vue";
@@ -74,16 +73,6 @@ const routes = [
             },
         ]
     },
-    // {
-    //     path: "/products",
-    //     component: ContentComponent,
-    //     children: [
-    //         {
-    //             path: '',
-    //             component: ProductsList,
-    //         },
-    //     ]
-    // },
     {
         path: "/party-menu",
         component: ContentComponent,

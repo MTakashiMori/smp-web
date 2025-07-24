@@ -53,7 +53,7 @@
 			    Cardápio / Menu - {{item.label}}
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
-			    <products-display-list :products="item.products"/>
+                <h1> DO THIS </h1>
 			</v-expansion-panel-content>
 		    </v-expansion-panel>
 		</v-expansion-panels>
@@ -97,12 +97,11 @@
 <script>
 
     import Service from "@/service";
-    import ProductsDisplayList from "@/views/products/products-display-list.vue";
     import AddPersonToPartyModal from "@/views/party/add-person-to-party-modal.vue";
 
     export default {
 	name: 'party-details',
-	components: {AddPersonToPartyModal, ProductsDisplayList},
+	components: {AddPersonToPartyModal},
 	data() {
 	    return {
 		path: 'party',

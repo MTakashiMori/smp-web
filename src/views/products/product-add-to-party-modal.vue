@@ -5,7 +5,7 @@
         <v-card>
 
             <v-card-title>
-                Produto
+                Adicionar produto
                 <v-spacer></v-spacer>
                 <v-btn icon @click="close">
                     <v-icon>close</v-icon>

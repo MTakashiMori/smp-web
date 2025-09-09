@@ -41,7 +41,7 @@
 			</v-chip>
 		    </template>
 
-		    <template v-slot:item.actions="{ item }">
+		    <template v-slot:item.actions="{ item }" class="button-section">
 
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on }">

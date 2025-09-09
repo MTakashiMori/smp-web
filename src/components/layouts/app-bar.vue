@@ -68,11 +68,11 @@
 
         </v-app-bar>
 
-	<select-party-modal
-	    v-if="selectPartyModalStatus"
-	    :status="selectPartyModalStatus"
-	    @close="closeSelectPartyModal"
-	/>
+        <select-party-modal
+            v-if="selectPartyModalStatus"
+            :status="selectPartyModalStatus"
+            @close="closeSelectPartyModal"
+        />
 
     </div>
 </template>

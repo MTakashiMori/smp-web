@@ -36,6 +36,13 @@
                 </v-list-group><!-- ADMIN -->
         </v-list>
 
+        <template v-slot:append v-if="!drawerModel">
+            <v-divider></v-divider>
+            <v-container style="text-align: center">
+               <strong> Pároquia Santa Maria dos Pobres - Brasília/DF - {{ new Date().getFullYear() }}</strong>
+            </v-container>
+        </template>
+
     </v-navigation-drawer>
 
 </template>
@@ -81,4 +88,3 @@
         }
     }
 </script>
-

@@ -17,7 +17,7 @@
                 <br>
 
                 <div class="d-flex align-center">
-                      <v-text-field label="Valor" placeholder="Digite o valor a ser inserido" v-model="manualValue"></v-text-field>
+                    <v-text-field v-model.lazy="manualValue" v-money="money" label="Valor" placeholder="Digite o valor a ser inserido"></v-text-field>
                       <v-btn icon text @click="addValue(manualValue)">
                         <v-icon>add</v-icon>
                       </v-btn>
@@ -33,11 +33,19 @@
                     </p>
                 </div>
 
-                <div v-for="(item, index) in valueInputs" @click="removeValue(index)">
+                <div v-for="(item, index) in cart.values" @click="removeValue(item)">
                     <p class="spaced">
                         <span class="start"></span>
                         <span class="dots"></span>
-                        <span class="end">+ R$ {{item}} </span>
+                        <span class="end">+ R$ {{item.value}} </span>
+                    </p>
+                </div>
+
+                <div v-for="(item, index) in cart.products" @click="removeValue(item)">
+                    <p class="spaced">
+                        <span class="start">{{ item | productNameWithQuantityFormatted }}</span>
+                        <span class="dots"></span>
+                        <span class="end">+ R$ {{ item | productTotalFormatted }} </span>
                     </p>
                 </div>
 
@@ -59,8 +67,13 @@
 
 <script>
 
+    import {VMoney} from 'v-money';
     export default {
         name: 'sales-by-value',
+        directives: {money: VMoney},
+        props: {
+            cart: Object
+        },
         data() {
             return {
                 buttonsCategory: [
@@ -76,30 +89,84 @@
                     balance: 0
                 },
                 valueInputs: [],
-		manualValue: 0
+		        manualValue: 0,
+                valueId: 0,
+                money: {
+                    decimal: ',',
+                    thousands: '.',
+                    // prefix: 'R$ ',
+                    precision: 2,
+                    masked: false,
+                },
             }
         },
         methods: {
             addValue(value) {
-		if(value <= 0) {
-		    return;
-		}
-                this.valueInputs.push(value);
-		this.manualValue = 0;
+                if (typeof value == 'string') {
+                    value = parseFloat(value.replace(/\./g, '').replace(',', '.'));
+                }
+                if (value <= 0) return;
+
+                const tempCart = {
+                    ...this.cart,
+                    values: [...this.cart.values]
+                };
+
+                tempCart.values.push({
+                    key: this.valueId++,
+                    value: value
+                });
+
+                this.manualValue = 0;
+
+                this.$emit('updateCart', tempCart);
             },
-            removeValue(index) {
-                this.valueInputs.splice(index, 1);
+            removeValue(item) {
+                let tempCart = structuredClone(this.cart);
+
+                if(item.id) {
+                    let exists = tempCart.products.findIndex((i) => i.id === item.id);
+
+                    if(exists === -1) {
+                        return;
+                    }
+
+                    if(exists !== -1) {
+                        if(tempCart.products[exists].amount > 1) {
+                            tempCart.products[exists].amount--;
+                        } else {
+                            tempCart.products.splice(exists,1);
+                        }
+                    }
+
+                    this.$emit('updateCart', tempCart);
+                    return;
+                }
+
+                let index = tempCart.values.findIndex((i) => i.key === item.key);
+                tempCart.values.splice(index, 1);
+                this.$emit('updateCart', tempCart);
             }
         },
         computed: {
             finalBalance() {
-                let newValues = 0;
-                for (const value of this.valueInputs) {
-                    newValues += Number(value);
+                let finalBalance = 0;
+
+                const obj = this.cart
+
+                for (let i = 0; i < obj.products.length; i++) {
+                    const product = obj.products[i];
+                    finalBalance += Number(product.amount * product.price)
                 }
-                return (this.model.balance + newValues);
+
+                for (let i = 0; i < obj.values.length; i++) {
+                    const value = obj.values[i];
+                    finalBalance += Number(value.value);
+                }
+
+                return finalBalance;
             }
-        }
+        },
 
     }
 

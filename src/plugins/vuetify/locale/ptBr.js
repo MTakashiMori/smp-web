@@ -35,5 +35,6 @@ export default {
     },
     fileInput:{
         counterSize: '{0} Arquivos ({1})'
-    }
+    },
+    badge: 'Etiqueta'
 };

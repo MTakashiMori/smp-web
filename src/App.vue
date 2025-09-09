@@ -6,9 +6,10 @@
             <v-main>
                 <v-overlay :value="isLoading" absolute></v-overlay>
                 <content-component></content-component>
+
             </v-main>
 
-        <FooterComponent></FooterComponent>
+<!--        <FooterComponent></FooterComponent>-->
 
     </v-app>
 </template>
@@ -68,5 +69,9 @@
     }
     .anychart-credits-logo {
         visibility: hidden;
+    }
+
+    .button-section {
+        white-space: nowrap;
     }
 </style>

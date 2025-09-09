@@ -14,6 +14,19 @@ Vue.use(VueMask);
 Vue.use(money, {precision: 4})
 Vue.use(Cookies);
 
+Vue.filter('productTotalFormatted', function(item) {
+  return (item.amount * item.price);
+});
+Vue.filter('productNameWithQuantityFormatted', function(item) {
+  if(item.amount === 1) {
+    return item.name;
+  }
+  return item.name + ' R$' + item.price + ' (x' + item.amount + ')';
+});
+Vue.filter('brlCurrency', function(item) {
+    return item.toFixed(2).replace('.',',')
+});
+
 new Vue({
   router,
   store,
